@@ -11,7 +11,7 @@ from ${module}.managers.${resource_lower} import ${resource}Manager
 class Base${resource}APIView(BaseAPIView):
     serializer_classes = {
         'get': None,
-        'create': ${resource}CreateSerializer,
+        'post': ${resource}CreateSerializer,
         'put': ${resource}UpdateSerializer,
         'patch': ${resource}PartialUpdateSerializer,
         'delete': None
@@ -27,7 +27,7 @@ class Base${resource}APIView(BaseAPIView):
     
     def get_service(self, *args, **kwargs):
         request = kwargs.get('request')
-        return ServiceFactory(${resource}Manager, self.get_serializer_class(request=request)))
+        return ServiceFactory(${resource}Manager, self.get_serializer_class(request=request))
     
     def get_serializer_class(self, *args, **kwargs):
         request = kwargs.get('request')
