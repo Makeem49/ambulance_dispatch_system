@@ -5,14 +5,15 @@ from django.db import models
 
 from base.models import BaseModel
 from account.models import User
-    
+
+
 class TOTPAuth(BaseModel):
     """
     Model for storing Time-based One-Time Password (TOTP) authentication settings for users.
-    
+
     This model manages the TOTP two-factor authentication configuration for users,
     including the secret key, verification status, and related metadata.
-    
+
     Attributes:
         user (User): One-to-one relationship with the user model
         otp_enabled (bool): Whether TOTP is enabled for the user
@@ -22,6 +23,7 @@ class TOTPAuth(BaseModel):
         created_at (datetime): Timestamp of when the TOTP record was created
         updated_at (datetime): Timestamp of the last update to the TOTP record
     """
+
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="totp_auth"
     )
@@ -38,4 +40,5 @@ class TOTPAuth(BaseModel):
 
     class Meta(auto_prefetch.Model.Meta):
         """Metadata options for the TOTPAuth model."""
-        ordering = ['-created_at']
+
+        ordering = ["-created_at"]

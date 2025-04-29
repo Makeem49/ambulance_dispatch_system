@@ -20,7 +20,7 @@ class BaseAuthAPIView(NonAuthUserMixin, BaseAPIView):
         "deactivate-2fa": auth.TwoFactorDeactivateSerializer,
         "verify-otp": auth.VerifyTOTPSerializer,
         "mfa-status": None,
-        "change-user-password": auth.ChangeUserPasswordSerializer
+        "change-user-password": auth.ChangeUserPasswordSerializer,
     }
 
     serializer_response_classes = {
@@ -67,7 +67,8 @@ class LoginAPIView(BaseAuthAPIView):
         return self.handle_request(
             request, "post", method, data=request.data, method=method
         )
-        
+
+
 class RegistrationAPIView(BaseAuthAPIView):
     """Handle patient account registration requests."""
 
@@ -77,7 +78,8 @@ class RegistrationAPIView(BaseAuthAPIView):
         return self.handle_request(
             request, "post", method, data=request.data, method=method
         )
-        
+
+
 class OTPLoginAPIView(BaseAuthAPIView):
     """Handle user login requests through totp."""
 
@@ -176,7 +178,8 @@ class VerifyOTPAPIView(AuthUserMixin, BaseAuthAPIView):
         return self.handle_request(
             request, "post", method, data=request.data, method=method
         )
-        
+
+
 class ChangeUserPasswordAPIView(AuthUserMixin, BaseAuthAPIView):
     """Handle User password update requests."""
 
@@ -186,4 +189,3 @@ class ChangeUserPasswordAPIView(AuthUserMixin, BaseAuthAPIView):
         return self.handle_request(
             request, "post", method, data=request.data, method=method
         )
-

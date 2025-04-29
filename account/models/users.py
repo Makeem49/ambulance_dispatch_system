@@ -7,9 +7,10 @@ from django.contrib.auth.base_user import BaseUserManager
 
 
 class ROLE_CHOICES(models.TextChoices):
-    STAFF = 'STAFF', 'Staff' # Hospital Staff role 
-    DISPATCHER = 'DISPATCHER', 'Dispatcher' # Ambulance dispatcher role 
-    PATIENT = 'PATIENT', 'Patient' # Patient user role 
+    ADMIN = "ADMIN", "Admin"  # System admin role
+    STAFF = "STAFF", "Staff"  # Hospital Staff role
+    DISPATCHER = "DISPATCHER", "Dispatcher"  # Ambulance dispatcher role
+    PATIENT = "PATIENT", "Patient"  # Patient user role
 
 
 class CustomUserManager(BaseUserManager):
@@ -21,9 +22,7 @@ class CustomUserManager(BaseUserManager):
         """
 
         username = self.model.normalize_username(username)
-        user = self.model(
-            username=username, **extra_fields
-        )
+        user = self.model(username=username, **extra_fields)
         user.set_password(password)
 
         user.save()
@@ -55,26 +54,23 @@ class User(AbstractBaseUser):
 
     # User role field
     role = models.CharField(
-        max_length=10,
-        choices=ROLE_CHOICES.choices,
-        default=ROLE_CHOICES.PATIENT
+        max_length=10, choices=ROLE_CHOICES.choices, default=ROLE_CHOICES.PATIENT
     )
-    
-    # next of emergency contact 
+
+    # next of emergency contact
     emergency_first_name = models.CharField(_("first name"), max_length=1000)
     emergency_last_name = models.CharField(_("last name"), max_length=1000)
     emergency_phone_number = models.CharField(_("first name"), max_length=1000)
     emergency_address = models.TextField(null=True)
-    
-    # datetime 
+
+    # datetime
     created = models.DateTimeField(auto_now_add=True, null=True)
     updated = models.DateTimeField(auto_now=True, null=True)
 
-    objects = CustomUserManager()  # manager 
+    objects = CustomUserManager()  # manager
     USERNAME_FIELD = "username"
 
     class Meta:
         verbose_name = _("user")
         verbose_name_plural = _("users")
         ordering = ("-pk",)
-

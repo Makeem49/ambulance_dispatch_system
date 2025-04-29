@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-import os 
+
+import os
 from pathlib import Path
 from dotenv import load_dotenv
 from datetime import timedelta
@@ -30,7 +31,7 @@ SECRET_KEY = "django-insecure-02e6mrkbas0df_*gf_q53b_p3%^n%g=4e9r(1@a(w=q*^ch3!7
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = "account.User"
 
@@ -44,15 +45,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # third-party apps 
-    'rest_framework',
-    'rest_framework_simplejwt.token_blacklist',
-    'rest_framework_simplejwt',
-    
-    # custom app 
+    # third-party apps
+    "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
+    "rest_framework_simplejwt",
+    # custom app
     "account",
-    "usermgmt"
-    
+    "usermgmt",
 ]
 
 MIDDLEWARE = [
@@ -142,7 +141,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=50),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
@@ -170,51 +169,51 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-if os.getenv('ENNVIRONMENT') == 'local':
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if os.getenv("ENNVIRONMENT") == "local":
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 else:
-    EMAIL_HOST = os.getenv('EMAIL_HOST')
-    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-    EMAIL_PORT = os.getenv('EMAIL_PORT')
+    EMAIL_HOST = os.getenv("EMAIL_HOST")
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+    EMAIL_PORT = os.getenv("EMAIL_PORT")
     EMAIL_USE_TLS = True
-    
-if os.getenv('LOCAL_REDIS'):
-    REDIS = os.getenv('LOCAL_REDIS')
+
+if os.getenv("LOCAL_REDIS"):
+    REDIS = os.getenv("LOCAL_REDIS")
 else:
-    REDIS = os.getenv('REDIS')
+    REDIS = os.getenv("REDIS")
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': REDIS,
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'CONNECTION_POOL_KWARGS': {
-                'max_connections': 100,
-                'retry_on_timeout': True,
-            }
-        }
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 100,
+                "retry_on_timeout": True,
+            },
+        },
     }
 }
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'default'
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
 }
 
-TOTP_ISSUER_NAME = "ADS" # Ambulance Dispatch System
+TOTP_ISSUER_NAME = "ADS"  # Ambulance Dispatch System
 
-ALLOWED_HOSTS=["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True  # For security, set to False in production

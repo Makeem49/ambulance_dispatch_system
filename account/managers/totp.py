@@ -6,17 +6,18 @@ from account.models import TOTPAuth
 
 TOTP_ISSUER_NAME = getattr(settings, "TOTP_ISSUER_NAME", "drftotp")
 
+
 class TOTPManager:
     """Manager class for OTP operations including generation, validation and retrieval."""
-    
+
     @staticmethod
     def activate_totp(activate_totp, user):
         """Activate TOTP for user authentication.
-        
+
         Args:
             activate_totp (bool): Flag to activate TOTP
             user (User): User object to activate TOTP for
-            
+
         Returns:
             tuple: (data, error, status_code) containing activation result
         """
@@ -40,24 +41,28 @@ class TOTPManager:
                     auth.otp_auth_url = provisioning_uri
                     verified = auth.otp_verified
                     auth.save()
-                    data = {"message": "TOTP activated successfully.", "otp_auth_url": provisioning_uri, "verified": verified}
+                    data = {
+                        "message": "TOTP activated successfully.",
+                        "otp_auth_url": provisioning_uri,
+                        "verified": verified,
+                    }
                     return data, error, status.HTTP_200_OK
             except Exception as e:
                 print(e)
-                error =  "TOTP activation failed."
+                error = "TOTP activation failed."
                 return None, error, status.HTTP_400_BAD_REQUEST
         else:
-            error =  "TOTP activation failed."
+            error = "TOTP activation failed."
             return None, error, status.HTTP_400_BAD_REQUEST
-        
+
     @staticmethod
     def verify_totp(token, user):
         """Verify TOTP token for user authentication.
-        
+
         Args:
             token (str): The TOTP token to verify
             user (User): The user object to verify token against
-            
+
         Returns:
             tuple: (data, error, status_code) containing verification result
         """
@@ -75,7 +80,10 @@ class TOTPManager:
                 auth.otp_verified = True
                 auth.otp_enabled = True
                 auth.save()
-                data = {"message": "TOTP verified successfully", "verified": auth.otp_enabled }
+                data = {
+                    "message": "TOTP verified successfully",
+                    "verified": auth.otp_enabled,
+                }
                 return data, error, status.HTTP_200_OK
 
             error = "Invalid token"
@@ -88,20 +96,20 @@ class TOTPManager:
             print(e)
             error = "An error occurred while verifying TOTP."
             return None, error, status.HTTP_500_INTERNAL_SERVER_ERROR
-        
+
     @staticmethod
     def mfa_status(user):
         """Check the status of TOTP for a user.
-        
+
         Args:
             user (User): The user object to check TOTP status for
-            
+
         Returns:
             tuple: (data, error, status_code) containing TOTP status information
         """
         error = data = None
         try:
-            auth, _ = TOTPAuth.objects.get_or_create(user=user) # create if not exists
+            auth, _ = TOTPAuth.objects.get_or_create(user=user)  # create if not exists
 
             data = {
                 "message": "TOTP enabled." if auth.otp_enabled else "TOTP disabled.",
@@ -113,20 +121,20 @@ class TOTPManager:
             print(e)
             error = "An error occurred while checking TOTP status."
             return None, error, status.HTTP_500_INTERNAL_SERVER_ERROR
-        
+
     @staticmethod
     def disable_totp(deactivate_totp, user):
         """Disable TOTP authentication for a user.
-        
+
         Args:
             deactivate_totp (bool): Flag indicating whether to deactivate TOTP
             user (User): The user object to disable TOTP for
-            
+
         Returns:
             tuple: (data, error, status_code) containing the result of the operation
         """
         error = data = None
-        
+
         if deactivate_totp:
             try:
                 with transaction.atomic():

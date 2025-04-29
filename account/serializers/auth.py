@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from account.models import User
+from account.models.users import ROLE_CHOICES
 
 
 class LoginSerializer(serializers.Serializer):
@@ -19,28 +20,34 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Please provide either email or username")
 
         return data
-    
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
     password = serializers.CharField(required=True)
+
     class Meta:
         model = User
-        exclude = ['username', 'role', 'created', 'updated', 'is_mfa_enabled'] 
+        exclude = ["username", "created", "updated", "is_mfa_enabled", "role"]
+
 
 class RegistrationResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 
-                  'last_name', 'phone_number', 
-                  'role', 'emergency_first_name', 
-                  'emergency_last_name', 
-                  'emergency_phone_number', 
-                  ] 
-    
-    
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "phone_number",
+            "role",
+            "emergency_first_name",
+            "emergency_last_name",
+            "emergency_phone_number",
+        ]
+
+
 class TOTPLoginSerializer(serializers.Serializer):
     refresh_token = serializers.CharField(required=True)
     otp = serializers.CharField(max_length=6, min_length=6)
-
 
 
 class LoginResponseSerializer(serializers.Serializer):
@@ -104,6 +111,7 @@ class TwoFactorActivateResponseSerializer(serializers.Serializer):
     otp_auth_url = serializers.CharField()
     verified = serializers.BooleanField()
 
+
 class TwoFactorDeactivateSerializer(serializers.Serializer):
     deactivate_totp = serializers.BooleanField(required=True)
 
@@ -120,11 +128,12 @@ class VerifyTOTPResponseSerializer(serializers.Serializer):
     message = serializers.CharField()
     verified = serializers.BooleanField()
 
+
 class ChangeUserPasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=False)
     new_password = serializers.CharField(required=True)
     token = serializers.CharField(required=False)
-    
+
     def validate(self, data):
         old_password = data.get("old_password")
         token = data.get("token")
@@ -133,11 +142,10 @@ class ChangeUserPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "Please provide either old_password for user with no mfa activated or token for user with mfa activated, not both"
             )
-            
+
         if not old_password and not token:
-            raise serializers.ValidationError("Please provide either old_password for user with no mfa activated or token for user with mfa activated, not both")
+            raise serializers.ValidationError(
+                "Please provide either old_password for user with no mfa activated or token for user with mfa activated, not both"
+            )
 
         return data
-    
-
-
