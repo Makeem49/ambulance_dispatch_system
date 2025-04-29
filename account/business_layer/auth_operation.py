@@ -1,4 +1,5 @@
 
+from django.db import transaction
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,6 +15,7 @@ from account.models.token import Token
 from base.send_email import EmailService
 from account.managers.totp import TOTPManager
 from account.managers.otp import OTPManager
+from usermgmt.managers.user import UserManager
 from base.utils.password_checker import check_password as validate_user_password
 
 
@@ -73,6 +75,25 @@ class AuthOperations:
             'refresh_token': refresh_token,
             'message': "Authentication successful."
         }, None, 200
+        
+    @staticmethod
+    def register(data):
+        """
+            Create a new user with the provided data.
+            
+            Args:
+                data (dict): Dictionary containing user registration data.
+                
+            Returns:
+                User: The created user instance, error, and status_code 
+        """
+        
+        try:
+            with transaction.atomic():
+                instance, error , status_code = UserManager.post(data=data)
+        except Exception as error:
+            return None, str(error), status.HTTP_400_BAD_REQUEST
+        return instance, error, status_code
         
     @staticmethod
     def validate_login_otp(data):

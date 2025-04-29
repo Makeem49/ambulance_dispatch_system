@@ -10,6 +10,7 @@ class BaseAuthAPIView(NonAuthUserMixin, BaseAPIView):
 
     serializer_classes = {
         "login": auth.LoginSerializer,
+        "register": auth.RegistrationSerializer,
         "validate-login-otp": auth.TOTPLoginSerializer,
         "logout": auth.LogoutSerializer,
         "forgot-password": auth.ForgotPasswordSerializer,
@@ -24,6 +25,7 @@ class BaseAuthAPIView(NonAuthUserMixin, BaseAPIView):
 
     serializer_response_classes = {
         "login": auth.LoginResponseSerializer,
+        "register": auth.RegistrationResponseSerializer,
         "validate-login-otp": auth.LoginResponseSerializer,
         "logout": auth.LogoutResponseSerializer,
         "forgot-password": auth.ForgetPasswordResponseSerializer,
@@ -58,6 +60,16 @@ class BaseAuthAPIView(NonAuthUserMixin, BaseAPIView):
 
 class LoginAPIView(BaseAuthAPIView):
     """Handle user login requests."""
+
+    def post(self, request):
+        """Process POST request for user login."""
+        method = request.resolver_match.url_name
+        return self.handle_request(
+            request, "post", method, data=request.data, method=method
+        )
+        
+class RegistrationAPIView(BaseAuthAPIView):
+    """Handle patient account registration requests."""
 
     def post(self, request):
         """Process POST request for user login."""

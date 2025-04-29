@@ -20,6 +20,23 @@ class LoginSerializer(serializers.Serializer):
 
         return data
     
+class RegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(required=True)
+    class Meta:
+        model = User
+        exclude = ['username', 'role', 'created', 'updated', 'is_mfa_enabled'] 
+
+class RegistrationResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 
+                  'last_name', 'phone_number', 
+                  'role', 'emergency_first_name', 
+                  'emergency_last_name', 
+                  'emergency_phone_number', 
+                  ] 
+    
+    
 class TOTPLoginSerializer(serializers.Serializer):
     refresh_token = serializers.CharField(required=True)
     otp = serializers.CharField(max_length=6, min_length=6)

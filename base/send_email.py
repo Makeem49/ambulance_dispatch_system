@@ -130,18 +130,18 @@ class EmailService:
         """
         subject = "Welcome to Our Platform!"
         message = f"""
-        Hello {user.username},
+        Hello {user.first_name},
         
         Thank you for registering on our platform! We're excited to have you join our community.
         
         Your account has been successfully created. You can now:
-        - Browse and purchase books
-        - Create and publish your own books (if you're an author)
-        - Manage your profile and preferences
+        - Make a emergency request for the nearest ambulance for emergency
         
         If you have any questions or need assistance, please don't hesitate to contact our support team.
         
         Happy reading!
+        
+        Your username is {user.username}, You can either login with either username or email. 
         
         Best regards,
         The Team

@@ -45,11 +45,11 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    username = models.CharField(max_length=60, unique=True)
+    username = models.CharField(max_length=60, unique=True, db_index=True)
     first_name = models.CharField(_("first name"), max_length=1000)
     last_name = models.CharField(_("last name"), max_length=150)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    phone_number = models.CharField(max_length=70, null=True, blank=True)
+    phone_number = models.CharField(max_length=70, unique=True, db_index=True)
     is_mfa_enabled = models.BooleanField(default=False, null=True)
     address = models.TextField(null=True)
 

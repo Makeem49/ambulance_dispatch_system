@@ -21,7 +21,8 @@ class AuthenticationManager:
         action = args[0]
         request = kwargs.get('request')
         user = request.user
-        data['user'] = user
+        if user.is_authenticated:
+            data['user'] = user
 
         # Initialize default values
         error = None 
@@ -30,6 +31,7 @@ class AuthenticationManager:
         # Map of supported methods to their handler functions
         method_handlers = {
             'login': cls.auth_operation.login,
+            'register': cls.auth_operation.register,
             'logout': cls.auth_operation.logout,
             'forgot_password': cls.auth_operation.forgot_password,
             'reset_password': cls.auth_operation.reset_password,

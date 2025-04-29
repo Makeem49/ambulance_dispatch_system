@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     
     # custom app 
     "account",
+    "usermgmt"
     
 ]
 
