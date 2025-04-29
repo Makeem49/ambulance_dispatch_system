@@ -57,14 +57,11 @@ class UserManager(object):
     @classmethod
     def delete(cls, *args, **kwargs):
         id = kwargs.get("id")
-        filter_param = kwargs.get("filter_param")
         try:
             with transaction.atomic():
-                instance, error = cls.repository.delete(
-                    id=id, filter_param=filter_param
-                )
+                instance, error, status_code = UserBusinessLayer.delete_user(id)
                 if error:
-                    return None, error, status.HTTP_404_NOT_FOUND
+                    return instance, error, status_code
         except Exception as error:
             return None, str(error), status.HTTP_400_BAD_REQUEST
         data = {"message": "User deleted successfully"}

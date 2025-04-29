@@ -14,6 +14,7 @@ class UserBusinessLayer:
         status_code = status.HTTP_200_OK
         instances = None
         instance_id = kwargs.get("id")
+        request = kwargs.get('request')
 
         if query_params:
             query_params = dict(kwargs["query_params"])
@@ -38,8 +39,7 @@ class UserBusinessLayer:
                 query_params = filters
                 instances = User.objects.filter(query_params)
                 return instances, error, status_code
-
-            instances = User.objects.filter(**query_params)
+            instances = User.objects.all()
         elif instance_id:
             instances = UserBusinessLayer.get_user_by_id(instance_id)
             if instances is None:
@@ -124,5 +124,30 @@ class UserBusinessLayer:
             instance.save()
             return instance, None, status.HTTP_200_OK
 
+        except Exception as e:
+            return None, str(e), status.HTTP_400_BAD_REQUEST
+        
+    @staticmethod
+    def delete_user(id):
+        """
+        Delete a user by their ID.
+        
+        Args:
+            id (int): The ID of the user to delete.
+            
+        Returns:
+            tuple: (None, error, status_code)
+                - None: Since the user is deleted, no instance is returned.
+                - error: Error message if the operation fails, else None.
+                - status_code: HTTP status code (204 for success, 404 if not found, 400 for other errors).
+        """
+        instance = UserBusinessLayer.get_user_by_id(id)
+        if not instance:
+            return None, "User not found", status.HTTP_404_NOT_FOUND
+
+        try:
+            with transaction.atomic():
+                instance.delete()
+            return None, None, status.HTTP_204_NO_CONTENT
         except Exception as e:
             return None, str(e), status.HTTP_400_BAD_REQUEST

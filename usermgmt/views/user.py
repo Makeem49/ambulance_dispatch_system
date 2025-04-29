@@ -3,7 +3,6 @@ from usermgmt.serializers.user import (
     UserListSerializer,
     UserUpdateSerializer,
     UserDetailSerializer,
-    UserPartialUpdateSerializer,
     DeleteUserSerializer,
     AddUserSerializer,
 )
@@ -17,7 +16,6 @@ class BaseUserAPIView(BaseAPIView):
         "get": None,
         "post": AddUserSerializer,
         "put": UserUpdateSerializer,
-        "patch": UserPartialUpdateSerializer,
         "delete": None,
     }
 
@@ -25,7 +23,6 @@ class BaseUserAPIView(BaseAPIView):
         "get": UserListSerializer,
         "post": RegistrationResponseSerializer,
         "put": UserDetailSerializer,
-        "patch": UserDetailSerializer,
         "delete": DeleteUserSerializer,
     }
 
@@ -86,17 +83,6 @@ class UserAPIView(BaseUserAPIView):
         return self.handle_request(
             request,
             "put",
-            action,
-            data=request.data,
-            query_params=request.query_params,
-            id=id,
-        )
-
-    def patch(self, request, id):
-        action = "Update User"
-        return self.handle_request(
-            request,
-            "patch",
             action,
             data=request.data,
             query_params=request.query_params,

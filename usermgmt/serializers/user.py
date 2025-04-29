@@ -28,41 +28,11 @@ class UserListSerializer(serializers.ModelSerializer):
         ]
 
 
-class UserSummarySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "username", "email", "first_name", "last_name", "created"]
-
-
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            "username",
-            "email",
-            "first_name",
-            "last_name",
-            "role",
-            "is_active",
-            "is_staff",
-            "is_2fa_enabled",
-            "is_email_verified",
-            "bio",
-            "website",
-            "reading_preferences",
-        ]
+        exclude = ["username", "created", "updated", "password"]
 
-
-class UserPartialUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = "__all__"
-
-    def __init__(self, instance=None, data=..., **kwargs):
-        print("hello")
-        super().__init__(instance, data, **kwargs)
-        for field_name in self.fields:
-            self.fields[field_name].required = False
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
