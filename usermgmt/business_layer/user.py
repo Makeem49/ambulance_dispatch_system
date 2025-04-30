@@ -14,7 +14,7 @@ class UserBusinessLayer:
         status_code = status.HTTP_200_OK
         instances = None
         instance_id = kwargs.get("id")
-        request = kwargs.get('request')
+        request = kwargs.get("request")
 
         if query_params:
             query_params = dict(kwargs["query_params"])
@@ -126,15 +126,15 @@ class UserBusinessLayer:
 
         except Exception as e:
             return None, str(e), status.HTTP_400_BAD_REQUEST
-        
+
     @staticmethod
     def delete_user(id):
         """
         Delete a user by their ID.
-        
+
         Args:
             id (int): The ID of the user to delete.
-            
+
         Returns:
             tuple: (None, error, status_code)
                 - None: Since the user is deleted, no instance is returned.

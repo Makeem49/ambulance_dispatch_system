@@ -34,7 +34,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         exclude = ["username", "created", "updated", "password"]
 
 
-
 class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

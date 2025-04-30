@@ -4,15 +4,16 @@ from django.db import transaction
 from rest_framework import status
 from ambulance_mgmt.models import Ambulance
 
+
 class AmbulanceBusinessLayer:
     @staticmethod
     def list(kwargs):
         """
         List ambulances, optionally filtered by query parameters or retrieve a specific ambulance by ID.
-        
+
         Args:
             kwargs (dict): Dictionary containing query_params, id, and request.
-            
+
         Returns:
             tuple: (instances, error, status_code)
                 - instances: QuerySet of ambulances or a single ambulance instance.
@@ -24,7 +25,7 @@ class AmbulanceBusinessLayer:
         status_code = status.HTTP_200_OK
         instances = None
         instance_id = kwargs.get("id")
-        request = kwargs.get('request')
+        request = kwargs.get("request")
 
         if query_params:
             query_params = dict(kwargs["query_params"])
@@ -61,10 +62,10 @@ class AmbulanceBusinessLayer:
     def get_ambulance_by_id(id):
         """
         Retrieve an ambulance by its ID.
-        
+
         Args:
             id (int): The ID of the ambulance.
-            
+
         Returns:
             Ambulance instance or None if not found.
         """
@@ -77,10 +78,10 @@ class AmbulanceBusinessLayer:
     def create_ambulance(data):
         """
         Create a new ambulance with the provided data.
-        
+
         Args:
             data (dict): Dictionary containing ambulance details.
-            
+
         Returns:
             tuple: (instance, error, status_code)
         """
@@ -99,7 +100,7 @@ class AmbulanceBusinessLayer:
     def generate_ambulance_id():
         """
         Generate a unique ambulance ID (e.g., AMB001, AMB002).
-        
+
         Returns:
             str: A unique ambulance ID.
         """
@@ -113,11 +114,11 @@ class AmbulanceBusinessLayer:
     def update_ambulance(id, data):
         """
         Update an ambulance record by ID with the provided data.
-        
+
         Args:
             id (int): The ID of the ambulance to update.
             data (dict): Dictionary containing the fields to update.
-            
+
         Returns:
             tuple: (instance, error, status_code)
         """
@@ -138,10 +139,10 @@ class AmbulanceBusinessLayer:
     def delete_ambulance(id):
         """
         Delete an ambulance by its ID.
-        
+
         Args:
             id (int): The ID of the ambulance to delete.
-            
+
         Returns:
             tuple: (None, error, status_code)
         """
